@@ -6,7 +6,7 @@ import env from "./config/env";
 import logger from "./config/logger";
 
 require("./config/db")();
-// require("./config/routing")(app);
+require("./config/routing")(app);
 
 const PORT = env.PORT;
 const mode = env.NODE_ENV;
