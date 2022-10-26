@@ -19,7 +19,7 @@ import { Server } from "socket.io";
 
 const io = new Server(server);
 const STATIC_CHANNELS = ["global_notifications", "global_chat"];
-io.on("connection", (socket: any) => {
+// io.on("connection", (socket: any) => {
   /* socket object may be used to send specific messages to the new connected client */
   // console.log("a user connected");
   // socket.emit("connection", null);
@@ -32,11 +32,11 @@ io.on("connection", (socket: any) => {
   //   io.emit("logout", 10);
   //   console.log("Logged out", "id");
   // });
-  socket.disconnect();
-});
+//   socket.disconnect();
+// });
 
 // io;
 
-server.listen(PORT, () => {
+app.listen(PORT, () => {
   logger.info(`app listening at port ${PORT} in ${mode} mode`);
 });
