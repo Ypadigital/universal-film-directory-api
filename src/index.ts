@@ -16,7 +16,7 @@ import https from "https";
 const serverProtocol: any = env.NODE_ENV === "production" ? https : http;
 const server = serverProtocol.createServer(app);
 import { Server } from "socket.io";
-import { Socket } from "dgram";
+
 const io = new Server(server);
 const STATIC_CHANNELS = ["global_notifications", "global_chat"];
 io.on("connection", (socket: any) => {
