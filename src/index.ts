@@ -17,26 +17,28 @@ const serverProtocol: any = env.NODE_ENV === "production" ? https : http;
 const server = serverProtocol.createServer(app);
 import { Server } from "socket.io";
 
-const io = new Server(server);
+const io = new Server(server, { allowEIO3: true, cors: { origin: "*" } });
 const STATIC_CHANNELS = ["global_notifications", "global_chat"];
-// io.on("connection", (socket: any) => {
+io.on("connection", (socket: any) => {
   /* socket object may be used to send specific messages to the new connected client */
-  // console.log("a user connected");
-  // socket.emit("connection", null);
-  // // // // socket.on("disconnect", function () {
-  // // // //   /* socket object may be used to send specific messages to the new connected client */
-  // // // //   console.log("client disconnected");
-  // // // //   // socket.emit("connection", null);
-  // // // // });
+  console.log("a user connected");
+  socket.emit("connection", null);
+  // socket.on("disconnect", function () {
+  //   /* socket object may be used to send specific messages to the new connected client */
+  //   console.log("client disconnected");
+  //   socket.emit("connection", null);
+  // });
   // socket.on("logout", function () {
   //   io.emit("logout", 10);
   //   console.log("Logged out", "id");
   // });
-//   socket.disconnect();
-// });
+  setInterval(() => {
+    // socket.emit("onmessage", "Test Message");
+    // console.log("sending message")
+  }, 3000);
+  socket.disconnect();
+});
 
-// io;
-
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   logger.info(`app listening at port ${PORT} in ${mode} mode`);
 });
