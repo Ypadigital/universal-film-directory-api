@@ -47,6 +47,8 @@ interface IcommonEnv {
 
 //acommon environmental variables for all environments
 const common: IcommonEnv = {
+  ETHERS_MSG:
+    "UF Directory wants you to confirm your identity, please sign this message to proceed.",
   USDT_ADDRESS: process.env.USDT_ADDRESS,
   JWT_SECRET_KEY: process.env.JWT_SECRET_KEY,
   WALLET_PRIVATE_KEY: process.env.WALLET_PRIVATE_KEY,

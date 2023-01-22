@@ -7,10 +7,7 @@ import { IRegister } from "modules/users/users.types";
 
 class UserService {
   getAllUsers() {
-    return User.find().select("-__v").populate({
-      path: "skills",
-      select: "-__v",
-    });
+    return User.find().select("-__v");
   }
 
   create(user: IRegister | IUser) {
@@ -22,10 +19,7 @@ class UserService {
   }
 
   findById(id: string) {
-    return User.findById(id).populate({
-      path: "skills",
-      select: "-__v",
-    });
+    return User.findById(id);
   }
 
   update(id: string, updateQuery: { [key: string]: any }) {

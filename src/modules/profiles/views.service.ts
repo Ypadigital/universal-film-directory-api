@@ -1,4 +1,4 @@
-import { IViews } from "../../modules/users/users.types";
+import { IViews } from "../profiles/profiles.types";
 import Views from "./views.model";
 
 class ViewsService {
@@ -6,24 +6,28 @@ class ViewsService {
     return Views.find().select("-__v");
   }
 
-  create(userId: string, period: string) {
-    return Views.create({ userId, views: { period } });
+  create(profileId: string, period: string) {
+    return Views.create({ profileId, views: { period } });
   }
 
-  findByPeriod(userId: string, period: string) {
-    return Views.findOne({ userId, "views.period": period });
+  findByPeriod(profileId: string, period: string) {
+    return Views.findOne({ profileId, "views.period": period });
   }
 
   findById(id: string) {
     return Views.findById(id);
   }
 
-  updateViewCount(userId: string, period: string) {
+  updateViewCount(profileId: string, period: string) {
     return Views.findOneAndUpdate(
-      { userId, "views.period": period },
+      { profileId, "views.period": period },
       { $inc: { "views.$.count": 1 } },
       { new: true }
     );
+  }
+
+  findProfileViews(profileId: string) {
+    return Views.findOne({ profileId });
   }
 
   update(id: string, updateQuery: { [key: string]: any }) {

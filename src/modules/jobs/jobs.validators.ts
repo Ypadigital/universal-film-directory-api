@@ -5,10 +5,6 @@ export const addJobValidator = Joi.object({
     .regex(/^[0-9a-fA-F]{24}$/)
     .message("Invalid Service Id Included")
     .required(),
-  freelancerId: Joi.string()
-    .regex(/^[0-9a-fA-F]{24}$/)
-    .message("Invalid Freelancer Id Included")
-    .required(),
 });
 
 export const addCustomJobValidator = Joi.object({

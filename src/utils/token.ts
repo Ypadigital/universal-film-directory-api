@@ -19,14 +19,18 @@ const generateToken = ({ length, range, prefix }: ITokenOptions) => {
 
 const generateSignUpToken = () => {
   let range = Array.from(Array(10).keys());
-  let tokenOptions = { length: 5, range, prefix: "SZ-" };
+  let tokenOptions = { length: 5, range, prefix: "UFD-" };
   let newToken = generateToken(tokenOptions);
 
   return newToken;
 };
 
 const generateAuthToken = (user: any) => {
-  let dataToSign = { id: user.id, wallet: user.wallet };
+  let dataToSign = {
+    id: user.id,
+    wallet: user.wallet,
+    isContractor: user.isContractor,
+  };
   return jwt.sign({ ...dataToSign }, env.JWT_SECRET_KEY, {
     expiresIn: "1year",
   });

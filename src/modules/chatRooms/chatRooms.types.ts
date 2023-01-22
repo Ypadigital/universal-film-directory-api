@@ -1,8 +1,7 @@
 import { Types } from "mongoose";
 
 export interface IParticipant {
-  type: "freelancer" | "contractor";
-  id: Types.ObjectId;
+  userId: Types.ObjectId;
 }
 
 export interface IChatRoom {

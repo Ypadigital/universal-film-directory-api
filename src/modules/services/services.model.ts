@@ -11,38 +11,22 @@ const servicesSchema = new Schema<IService>(
       ref: "User",
       title: { type: String, required: true },
     },
-    images: [
-      {
-        url: { type: String, required: [true, "Images.url is required"] },
-        public_id: {
-          type: String,
-          required: [true, "Images.public_id is required"],
-        },
-        size: { type: Number, required: [true, "Images.size is required"] },
-        filename: {
-          type: String,
-          required: [true, "Images.filename is required"],
-        },
-        type: { type: String, required: [true, "Images.type is required"] },
-      },
-    ],
+    categoryId: {
+      type: Schema.Types.ObjectId,
+      required: [true, "Category id is required"],
+      ref: "Category",
+    },
+    images: [{ type: String }],
     rate: {
       type: {
         type: String,
-        enum: ["hourly", "fixed"],
+        enum: ["month", "week", "day", "hour"],
         required: [true, "rate.type is required"],
       },
       amount: { type: Number, required: [true, "rate.amount is required"] },
     },
-    duration: {
-      type: {
-        type: String,
-        enum: ["month", "week", "day", "hour"],
-        required: [true, "duration.type is required"],
-      },
-      amount: { type: Number, required: [true, "duration.amount is required"] },
-    },
     overview: { type: String, required: true },
+    link: { type: String, default: "" },
   },
   {
     timestamps: true,

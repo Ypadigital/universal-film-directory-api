@@ -21,6 +21,14 @@ class JobService {
     return Job.find({ _id: { $in: ids } });
   }
 
+  findUserJobs(freelancerId: string) {
+    return Job.find({ freelancerId });
+  }
+
+  findContractorJobs(contractorId: string) {
+    return Job.find({ contractorId });
+  }
+
   findByName(name: string) {
     return Job.findOne({ name });
   }

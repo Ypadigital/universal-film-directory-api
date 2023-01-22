@@ -1,0 +1,30 @@
+[
+  {
+    "firstName": "Chidiebere",
+    "lastName": "Ekennia",
+    "email": "chidiebereekennia@gmail.com",
+    "wallet": "0x5B6AE9B3eB03eA561847578841EDD5a1184925Fe",
+    "isContractor": false
+  },
+  {
+    "firstName": "Irene",
+    "lastName": "Mmasy",
+    "email": "irene@axyz.com",
+    "wallet": "0xaFa418e3C6ECCe93056AF021efd08fd210004E3c",
+    "isContractor": false
+  },
+  {
+    "firstName": "Ekene",
+    "lastName": "Kabuto",
+    "email": "ekene@ufd.com",
+    "wallet": "0x6AC484feF1bA8cf6fc9AC060496ecA7F73e95101",
+    "isContractor": false
+  },
+  {
+    "firstName": "Patrick",
+    "lastName": "Gazu",
+    "email": "patrick_gazu@axyz.com",
+    "wallet": "0x0680fb6c039A73Ad1F95147B75fF865fc5496AE9",
+    "isContractor": true
+  }
+]

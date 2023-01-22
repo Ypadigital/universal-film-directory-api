@@ -17,6 +17,7 @@ class ImagesController {
     });
     res.send(response("Successfully Created Image", image));
   }
+
   async getImage(req: Request, res: Response) {
     const { tokenId } = req.params;
     const image = await imagesService.find(tokenId);

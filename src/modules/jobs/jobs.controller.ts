@@ -8,20 +8,20 @@ import jobService from "../jobs/jobs.service";
 
 import jobsService from "./jobs.service";
 import servicesService from "../../modules/services/services.service";
+import jobsModel from "./jobs.model";
 
 class JobController {
-  async create(req: Request & { contractor: any }, res: Response) {
-    req.body.contractorId = req.contractor.id;
+  async create(req: Request & { user: any }, res: Response) {
     const service = await servicesService.findById(req.body.serviceId);
     if (!service) throw new BadRequestError("Invalid Service Id");
-    req.body.rate = service.rate;
-    req.body.title = service.title;
+    req.body.contractorId = req.user.id;
+    req.body.freelancerId = service.freelancerId;
     const job = await jobsService.create(req.body);
     res.send(response("Job created successfully", job));
   }
 
-  async createCustomJob(req: Request & { contractor: any }, res: Response) {
-    req.body.contractorId = req.contractor.id;
+  async createCustomJob(req: Request & { user: any }, res: Response) {
+    req.body.contractorId = req.user.id;
 
     const job = await jobsService.create(req.body);
     res.send(response("Job created successfully", job));
@@ -46,6 +46,16 @@ class JobController {
     if (!updatedJob) throw new BadRequestError("Invalid Job");
 
     res.send(response("Job was updated successfully", updatedJob));
+  }
+
+  async randomUpdate(req: Request & { job: any }, res: Response) {
+    const updatedJob = await jobsModel.updateMany(
+      {},
+      { freelancerId: "635a8d651c25a520b070b7e2" }
+    );
+    // if (!updatedJob) throw new BadRequestError("Invalid Job");
+
+    res.send(response("Job was updated successfully"));
   }
 }
 

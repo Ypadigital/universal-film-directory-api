@@ -5,14 +5,7 @@ export interface IUser {
   email: string;
   password?: string;
   name: string;
-}
-
-export interface IViews {
-  _id?: Types.ObjectId;
-  views: {
-    period: String;
-    count?: Number;
-  };
+  isContractor: boolean;
 }
 
 export interface IDecodedAuth {
@@ -29,5 +22,6 @@ export interface IRegister {
   signature: string;
   firstName: string;
   lastName: string;
+  isContractor?: boolean;
   wallet?: string;
 }

@@ -1,22 +1,28 @@
 const router = require("express").Router();
 
-import { user_authenticate } from "../../middlewares/auth";
+import { onlyFreelancers } from "../../middlewares/auth";
 import { imageMulter } from "../../lib/multer";
 import validateBy from "../../middlewares/validator";
 import serviceController from "../services/services.controller";
-import { addServiceValidator } from "./services.validators";
+import {
+  addServiceValidator,
+  updateServiceValidator,
+} from "./services.validators";
 
 router.get("/services", serviceController.getAllServices);
 router.get("/services/:id", serviceController.getServiceById);
+router.get("/services/filter", serviceController.filterServices);
 
 router.post(
   "/services",
-  [
-    user_authenticate,
-    imageMulter.array("images", 3),
-    validateBy(addServiceValidator),
-  ],
+  [onlyFreelancers, validateBy(addServiceValidator)],
   serviceController.create
+);
+
+router.put(
+  "/services/:id",
+  [onlyFreelancers, validateBy(updateServiceValidator)],
+  serviceController.updateService
 );
 
 export default router;

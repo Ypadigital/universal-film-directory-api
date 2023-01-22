@@ -6,16 +6,10 @@ const chatRoomsSchema = new Schema<IChatRoom>(
   {
     participants: [
       {
-        freelancerId: {
+        userId: {
           type: Schema.Types.ObjectId,
           default: null,
           ref: "User",
-          title: { type: String, required: true },
-        },
-        contractorId: {
-          type: Schema.Types.ObjectId,
-          default: null,
-          ref: "Contractor",
           title: { type: String, required: true },
         },
       },

@@ -3,7 +3,6 @@ import { v2 as cloudinary } from "cloudinary";
 import env from "../config/env";
 
 cloudinary.config(env.CLOUDINARY_CONFIG);
-
 export const uploadToCloud = function (filepath: string) {
   return cloudinary.uploader.upload(
     filepath,

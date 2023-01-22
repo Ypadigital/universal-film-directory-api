@@ -7,32 +7,28 @@ const jobsSchema = new Schema<IJob>(
     contractorId: {
       type: Schema.Types.ObjectId,
       required: [true, "Contractor id is required"],
-      ref: "Contractor",
+      ref: "User",
     },
     freelancerId: {
       type: Schema.Types.ObjectId,
       required: [true, "Freelancer id is required"],
       ref: "User",
-      title: { type: String, required: true },
     },
     serviceId: {
       type: Schema.Types.ObjectId,
-      ref: "Service",
-      default: null,
-    },
-    title: { type: String, required: true },
-    rate: {
-      type: {
-        type: String,
-        enum: ["hourly", "fixed"],
-        required: [true, "rate.type is required"],
-      },
-      amount: { type: Number, required: [true, "rate.amount is required"] },
+      ref: "services",
+      required: [true, "Service id is required"],
     },
     status: {
       type: String,
-      enum: ["Posted", "Ongoing", "Completed", "Cancelled"],
-      default: "Posted",
+      enum: ["Pending", "Ongoing", "Completed", "Cancelled"],
+      default: "Pending",
+    },
+    review: { type: String, default: "" },
+    rating: { type: Number, default: 0, enum: [0, 1, 2, 3, 4, 5] },
+    acceptance: {
+      status: { type: Boolean, default: false },
+      time: { type: Date, default: null },
     },
   },
 

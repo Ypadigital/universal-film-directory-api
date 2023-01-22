@@ -1,14 +1,13 @@
 import { NextFunction, Request, Response } from "express";
-import { IDecodedAuth } from "modules/users/users.types";
+import { IDecodedAuth, IUser } from "../modules/users/users.types";
 
 import { UnAuthorizedError } from "../config/errors";
 import userService from "../modules/users/users.service";
-import contractorService from "../modules/contractors/contractors.service";
 
 const getToken = (req: Request) => req.headers["x-auth-token"];
 
-export const user_authenticate = async function (
-  req: Request & { user?: any },
+export const authenticate = async function (
+  req: Request & { user?: IUser },
   res: Response,
   next: NextFunction
 ) {
@@ -16,9 +15,9 @@ export const user_authenticate = async function (
   if (!token) throw new UnAuthorizedError();
   try {
     const authToken = req.headers["x-auth-token"] as string;
+    console.log({ authToken, role: "Authenticate" });
     const decoded = userService.verifyAuthToken(authToken) as IDecodedAuth;
     const user = await userService.findById(decoded.id);
-
     if (!user) throw new UnAuthorizedError();
 
     req.user = user;
@@ -32,8 +31,8 @@ export const user_authenticate = async function (
   }
 };
 
-export const contractor_authenticate = async function (
-  req: Request & { contractor?: any },
+export const onlyFreelancers = async function (
+  req: Request & { user?: IUser },
   res: Response,
   next: NextFunction
 ) {
@@ -41,14 +40,46 @@ export const contractor_authenticate = async function (
   if (!token) throw new UnAuthorizedError();
   try {
     const authToken = req.headers["x-auth-token"] as string;
-    const decoded = contractorService.verifyAuthToken(
-      authToken
-    ) as IDecodedAuth;
-    const contractor = await contractorService.findById(decoded.id);
+    console.log({ authToken, role: "Freelancers" });
 
-    if (!contractor) throw new UnAuthorizedError();
+    const decoded = userService.verifyAuthToken(authToken) as IDecodedAuth;
+    const user = await userService.findById(decoded.id);
+    if (!user || user.isContractor) throw new UnAuthorizedError();
 
-    req.contractor = contractor;
+    req.user = user;
+    next();
+  } catch (error) {
+    const errors = [
+      "TokenExpiredError",
+      "NotBeforeError",
+      "JsonWebTokenError",
+      // "invalid token",
+      // "jwt malformed",
+    ];
+    if (errors.includes(error?.name)) {
+      throw new UnAuthorizedError();
+    }
+    next(error);
+  }
+};
+
+export const onlyContractors = async function (
+  req: Request & { user?: IUser },
+  res: Response,
+  next: NextFunction
+) {
+  const token = getToken(req);
+  if (!token) throw new UnAuthorizedError();
+  try {
+    const authToken = req.headers["x-auth-token"] as string;
+    console.log({ authToken, role: "Contractor" });
+
+    const decoded = userService.verifyAuthToken(authToken) as IDecodedAuth;
+    const user = await userService.findById(decoded.id);
+
+    if (!user || !user.isContractor) throw new UnAuthorizedError();
+
+    req.user = user;
     next();
   } catch (error) {
     const errors = ["TokenExpiredError", "NotBeforeError", "JsonWebTokenError"];

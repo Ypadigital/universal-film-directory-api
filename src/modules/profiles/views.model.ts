@@ -1,13 +1,13 @@
 import { model, Schema } from "mongoose";
 
-import { IViews } from "../../modules/users/users.types";
+import { IViews } from "../profiles/profiles.types";
 
 const viewsSchema = new Schema<IViews>(
   {
-    userId: {
+    profileId: {
       type: Schema.Types.ObjectId,
-      required: [true, "User id is required"],
-      ref: "User",
+      required: [true, "Profile id is required"],
+      ref: "Profile",
     },
     views: [
       {

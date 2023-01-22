@@ -1,6 +1,6 @@
 import { Types } from "mongoose";
 
-export interface ISkill {
+export interface ICategory {
   _id?: Types.ObjectId;
   name: string;
 }

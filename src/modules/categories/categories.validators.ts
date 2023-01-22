@@ -1,5 +1,5 @@
 import Joi from "joi";
 
-export const addSkillValidator = Joi.object({
+export const addCategoryValidator = Joi.object({
   name: Joi.string().required(),
 });
