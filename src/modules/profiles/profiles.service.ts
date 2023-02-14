@@ -3,13 +3,15 @@ import jwt from "jsonwebtoken";
 import env from "../../config/env";
 import Profile from "./profiles.model";
 import { IProfile } from "../profiles/profiles.types";
+import _ from "lodash";
+import { Types } from "mongoose";
 
 class ProfileService {
   create(profile: IProfile) {
     return Profile.create(profile);
   }
 
-  findByUserId(user: string) {
+  findByUserId(user: string | IProfile["user"]) {
     return Profile.findOne({ user });
   }
 
@@ -23,7 +25,7 @@ class ProfileService {
       })
       .populate({
         path: "user",
-        select: "firstName lastName",
+        select: "firstName lastName image",
       });
   }
 
@@ -41,6 +43,23 @@ class ProfileService {
 
   verifyAuthToken(token: string) {
     return jwt.verify(token, env.JWT_SECRET_KEY);
+  }
+
+  filterByQuery(filterQuery: { [key: string]: any }): any {
+    let keywordRegex = new RegExp("", "i");
+    if (filterQuery.keyword) {
+      keywordRegex = new RegExp(filterQuery.keyword, "i");
+      filterQuery = _.omit(filterQuery, ["keyword"]);
+    }
+    if (filterQuery.category) {
+      filterQuery.categories = { $in: Types.ObjectId(filterQuery.category) };
+      delete filterQuery.category;
+    }
+
+    return Profile.find({
+      $and: [filterQuery],
+      $or: [{ description: keywordRegex }],
+    }).select("-__v");
   }
 }
 

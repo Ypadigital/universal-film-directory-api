@@ -1,7 +1,7 @@
 {
-  "name": "mservices-api",
+  "name": "ufd-api",
   "version": "1.0.0",
-  "description": "The official api for the mservices app",
+  "description": "The official api for the ufd app",
   "main": "index.js",
   "author": "Chidiebere Ekennia",
   "license": "MIT",

@@ -56,7 +56,7 @@ const common: IcommonEnv = {
   RPC_URL: process.env.RPC_URL,
   VAULT_CONTRACT_ADDRESS: process.env.VAULT_CONTRACT_ADDRESS,
   PROVIDER_CONTRACT_ADDRESS: process.env.PROVIDER_CONTRACT_ADDRESS,
-  APP_NAME: process.env.APP_NAME || "mservices",
+  APP_NAME: process.env.APP_NAME || "ufd",
   OFFICE_ADDRESS: process.env.OFFICE_ADDRESS,
   EMAILER: process.env.EMAILER,
   BASE_URL: process.env.BASE_URL,
@@ -79,8 +79,7 @@ const common: IcommonEnv = {
     api_secret: process.env.CLOUDINARY_API_SECRET,
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   },
-  CLOUDINARY_FOLDER: (() =>
-    envName === "development" ? "mservices_dev" : "mservices")(),
+  CLOUDINARY_FOLDER: (() => (envName === "development" ? "ufd_dev" : "ufd"))(),
 };
 const development: Ienv = {
   NODE_ENV: "development",

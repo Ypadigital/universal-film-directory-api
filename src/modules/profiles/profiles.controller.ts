@@ -14,6 +14,7 @@ import profilesService from "./profiles.service";
 import profilesModel from "./profiles.model";
 import jobsService from "../../modules/jobs/jobs.service";
 import { getJobMeta } from "../../utils/helpers";
+import { IJob } from "modules/jobs/jobs.types";
 
 class UserController {
   async createProfile(req: Request & { user: any }, res: Response) {
@@ -34,10 +35,20 @@ class UserController {
       .select("-__v")
       .lean();
     if (!profile) throw new BadRequestError("Invalid Profile");
+    const jobs = await jobsService.findUserJobs(profile.user);
+    const jobsMeta = getJobMeta(jobs);
+    const ratings = jobs
+      .filter((job: IJob) => job.status === "Completed" && job.rating)
+      .map((j: IJob) => j.rating);
     const services = await servicesService.findByFreelancerId(profile.user);
 
     res.send(
-      response("Profile retrieved successfully", { ...profile, services })
+      response("Profile retrieved successfully", {
+        ...profile,
+        ...jobsMeta,
+        services,
+        ratings,
+      })
     );
   }
 
@@ -102,7 +113,7 @@ class UserController {
 
   async updateProfile(req: Request & { user: any }, res: Response) {
     const update = req.body;
-    const id = req.user.id;
+    const id = req.user._id;
     const profile = await profilesService.findByUserId(id);
     if (!profile) throw new BadRequestError("Invalid Profile");
     if (update.categories) {
@@ -116,6 +127,36 @@ class UserController {
     if (!updatedProfile) throw new BadRequestError("Invalid Profile");
 
     res.send(response("Profile was updated successfully", updatedProfile));
+  }
+  async getSearchResults(req: Request, res: Response) {
+    const query = req.query;
+
+    const results = await profilesService
+      .filterByQuery({
+        ...query,
+      })
+      .populate("user categories")
+      .lean();
+    const userIds = results.map((r: any) => r.user._id);
+    const jobs = await jobsService.findJobsByUserIds(userIds);
+    const getProfileRatings = (userId: string) => {
+      const userJobs = jobs.filter(
+        (job: any) => job.freelancerId.toString() === userId
+      );
+      const ratings = userJobs
+        .filter((job: IJob) => job.status === "Completed" && job.rating)
+        .map((j: IJob) => j.rating);
+      return ratings;
+    };
+    const finalResults = results.map((r: any) => {
+      const ratings = getProfileRatings(r.user._id.toString());
+      return {
+        ...r,
+        ratings,
+      };
+    });
+
+    res.send(response("Stars retrieved Successfully", finalResults));
   }
 }
 

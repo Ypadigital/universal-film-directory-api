@@ -27,13 +27,15 @@ const generateSignUpToken = () => {
 
 const generateAuthToken = (user: any) => {
   let dataToSign = {
-    id: user.id,
+    id: user._id,
     wallet: user.wallet,
-    isContractor: user.isContractor,
+    role: user.role,
   };
-  return jwt.sign({ ...dataToSign }, env.JWT_SECRET_KEY, {
+  const token = jwt.sign({ ...dataToSign }, env.JWT_SECRET_KEY, {
     expiresIn: "1year",
   });
+  console.log({ token });
+  return token;
 };
 
 export { generateSignUpToken, generateAuthToken };

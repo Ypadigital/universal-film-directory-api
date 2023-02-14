@@ -1,3 +1,4 @@
+import { IProfile } from "modules/profiles/profiles.types";
 import { Types } from "mongoose";
 
 export interface IUser {
@@ -5,7 +6,8 @@ export interface IUser {
   email: string;
   password?: string;
   name: string;
-  isContractor: boolean;
+  role: "freelancer" | "contractor";
+  profile?: Types.ObjectId | IProfile;
 }
 
 export interface IDecodedAuth {
@@ -22,6 +24,6 @@ export interface IRegister {
   signature: string;
   firstName: string;
   lastName: string;
-  isContractor?: boolean;
+  role: "freelancer" | "contractor";
   wallet?: string;
 }

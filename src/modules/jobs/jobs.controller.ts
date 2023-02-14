@@ -14,7 +14,7 @@ class JobController {
   async create(req: Request & { user: any }, res: Response) {
     const service = await servicesService.findById(req.body.serviceId);
     if (!service) throw new BadRequestError("Invalid Service Id");
-    req.body.contractorId = req.user.id;
+    req.body.contractorId = req.user._id;
     req.body.freelancerId = service.freelancerId;
     const job = await jobsService.create(req.body);
     res.send(response("Job created successfully", job));

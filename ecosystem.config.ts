@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: "mservices-api",
+      name: "ufd-api",
       script: "src/index.ts",
       instances: "max",
       env: {

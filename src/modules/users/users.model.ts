@@ -28,7 +28,16 @@ const userSchema = new Schema<IUser>(
       trim: true,
       required: true,
     },
-    isContractor: { type: Boolean, default: false },
+    role: {
+      type: String,
+      default: "freelancer",
+      enum: ["freelancer", "contractor"],
+    },
+    profile: {
+      type: Schema.Types.ObjectId,
+      ref: "Profile",
+      default: null,
+    },
     image: {
       type: String,
       required: true,

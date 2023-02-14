@@ -13,7 +13,7 @@ import servicesModel from "./services.model";
 
 class ServiceController {
   async create(req: Request & { user: any }, res: Response) {
-    req.body.freelancerId = req.user.id;
+    req.body.freelancerId = req.user._id;
     const service = await servicesService.create(req.body);
     res.send(response("Service created successfully", service));
   }

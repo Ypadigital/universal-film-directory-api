@@ -11,7 +11,7 @@ export const signUp = Joi.object({
   lastName: Joi.string().min(2).max(255),
   email: Joi.string().email().required(),
   signature: Joi.string().required(),
-  isContractor: Joi.boolean(),
+  role: Joi.string().valid("freelancer", "contractor"),
 });
 
 export const login = Joi.object({

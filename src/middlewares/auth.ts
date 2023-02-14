@@ -15,11 +15,10 @@ export const authenticate = async function (
   if (!token) throw new UnAuthorizedError();
   try {
     const authToken = req.headers["x-auth-token"] as string;
-    console.log({ authToken, role: "Authenticate" });
+    // console.log({ authToken });
     const decoded = userService.verifyAuthToken(authToken) as IDecodedAuth;
-    const user = await userService.findById(decoded.id);
+    const user = await userService.findById(decoded.id).select("-__v").lean();
     if (!user) throw new UnAuthorizedError();
-
     req.user = user;
     next();
   } catch (error) {
@@ -40,11 +39,10 @@ export const onlyFreelancers = async function (
   if (!token) throw new UnAuthorizedError();
   try {
     const authToken = req.headers["x-auth-token"] as string;
-    console.log({ authToken, role: "Freelancers" });
 
     const decoded = userService.verifyAuthToken(authToken) as IDecodedAuth;
-    const user = await userService.findById(decoded.id);
-    if (!user || user.isContractor) throw new UnAuthorizedError();
+    const user = await userService.findById(decoded.id).select("-__v").lean();
+    if (!user || user.role === "contractor") throw new UnAuthorizedError();
 
     req.user = user;
     next();
@@ -72,12 +70,10 @@ export const onlyContractors = async function (
   if (!token) throw new UnAuthorizedError();
   try {
     const authToken = req.headers["x-auth-token"] as string;
-    console.log({ authToken, role: "Contractor" });
 
     const decoded = userService.verifyAuthToken(authToken) as IDecodedAuth;
-    const user = await userService.findById(decoded.id);
-
-    if (!user || !user.isContractor) throw new UnAuthorizedError();
+    const user = await userService.findById(decoded.id).select("-__v").lean();
+    if (!user || user.role === "freelancer") throw new UnAuthorizedError();
 
     req.user = user;
     next();
